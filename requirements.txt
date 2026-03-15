@@ -1,4 +1,149 @@
 ## Student Name:
 ## Student ID: 
 
-Requirements #1:
+
+Constraints: 
+C1
+Persona: Jane
+Persona attribute: User expects automatic handling of conflicts
+Attribute type: Need
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must automatically handle conflicts in waitlist promotion.
+Current support level: Not Supported
+
+C2
+Persona: Jane
+Persona attribute: User expects predictable/consistent decision-making
+Attribute type: Need/Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must make the same decisions every time given the same current state and user requests.
+Current support level: Not Supported
+
+C3
+Persona: Mo
+Persona attribute: User expects explainable system decisions
+Attribute type: Behaviour
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system when in accessibility mode must log state changes and give the logic behind the changes. 
+Current support level: Not Supported
+
+C4
+Persona: Mo
+Persona attribute: User expects the system to not silently fail
+Attribute type: Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system when in accessibility mode must not reject a request or fail without outputting a notification detailing the reasoning.
+Current support level: Not Supported
+
+C5
+Persona: Mo
+Persona attribute: User expects determinism under ties
+Attribute type: Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must make the same choice deterministically under ties for waitlist position or promotion.
+Current support level: Not Supported
+
+C6
+Persona: Mo
+Persona attribute: User updates frequently
+Attribute type: Behaviour
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must handle frequent user requests such as cancellations or new registerations.
+Current support level: Not Supported
+
+C7
+Persona: Jane
+
+Persona Attribute: User expects minimum system interaction
+Attribute type: Behaviour
+Operationalization: Constraint
+
+Derived Constraint (if converted): The system must not notify or ask the user to make a decision when it comes to waitlist promotions
+Current support level: Not Supported
+
+C8
+Persona: Jane
+
+Persona Attribute: User does not like duplicate system messages
+Attribute type: Pain Points
+Operationalization: Constraint
+
+Derived Constraint (if converted): The system must not notify a user of the same event twice.
+Current support level: Not Supported
+
+Acceptance Criteria:
+AC1
+Given: Two users attempt to register at the same time, and registration is full
+When: The system adds the user to waitlist
+Then: The system give will the lower position based on the User with the lower alphabetically ordered user_id.
+Linked Constraint ID(s): C1, C2, C5
+AC2
+Given: A registered user cancelled, and there are waitlisted users in the queue
+When: The system needs to promote a waitlisted user
+Then: The system give promoted the user with the lowest positin
+Linked Constraint ID(s): C2
+
+AC3
+When: The system is in accessibility mode, and a promotion occurs
+When: The system promotes the user
+Then: The system notifies the user with the user promoted, alongside their user_id, waitlist position, and date of arrival, and explains that they were chosen due to having the lowest position, based on their date of arrival, and secondarily user_id
+Linked Constraint ID(s): C3
+
+AC4
+When: The system is in accessibility mode, and a duplicate user registration occurs
+When: The system rejects the request
+Then: The system notifies the user that the user was already registered, and gives the user's user_id, status, and waitlist position (if applicable)
+Linked Constraint ID(s): C3, C4
+
+AC5
+Given: Two users attempt to register at the same time, and there is only one open spot
+When: The system registers one user
+Then: The system give register the User with the first alphabetically sorted user_id
+Linked Constraint ID(s): C1, C2, C5
+
+AC6
+Given: The system is given 20 user cancellations simultaneously and 20 new user registrations
+When: The system has performed all of its operations
+Then: The system must have the same resultant state every time
+Linked Constraint ID(s): C2, C6
+
+AC7
+Given: The system promotes a new user into registration
+When: The system notifies the user
+Then: The system must only notify the user once
+Linked Constraint ID(s): C7
+
+Requirements:
+1.The system shall accept a fixed integer capacity greater than zero for the Event.
+2. The system shall register Users into the Event in chronological order when there is no waitlist, as long as there is still capacity.
+3. The system shall waitlist Users if the Event's capacity is full.
+
+4. The system shall keep track of the User's position in the waitlist based on a FIFO basis.
+5. The system shall promote a User from the waitlist into being registered on a FIFO basis, if a registered User cancels.
+6. The system shall not keep track of position once a User has been promoted from the waitlist into being a registered User.
+7. The system shall display the User's status and if waitlisted -position - upon being prompted by the User.
+8. The system shall reject a User's new registration, if they are already registered or in waitlist.
+
+9. The system shall move down all higher positions by one, once a waitlisted User cancels.
+10. The system shall treat a User who had once been registered but cancelled in the same way as a newly-registered User.
+1. ADD, requirement 11, The system shall have an accessibility mode, where it shall notify the user of waitlist promotions , and log the changes in waitlist position and the registered User list, as well as the initial waitlist position, statuses, and user_id of the users whose status or position changed.
+
+2. MODIFY, requirement 4, The system shall keep track of the User's position in the waitlist based on a FIFO basis primarily and alphabetically ordered user_id secondarily.
+
+Revision Notes------------------------------------------------
+
+Requirement Updated: C5 (determinism under ties)
+Constraint: If two users have the same request timestamp, the system must break ties deterministically using the alphabetical order of user_id.
+Reason: LLM identified that it could be expanded from only applying to registration.
+
+Requirement Added: 12 (Unique User Identifier)
+Requirement: The system shall assign each user a unique user ID.
+Reason: LLM identified the ambiguity, as I had assumed User ID was already unique
+
+Requirement Updated: 11
+Change: Accessibility mode will apply to all system operations.
+Reason: LLM identified the scope could be expanded
+
+Requirement Added: C9 (Logging must also happen deterministically in order of operations)
+Constraint: Log entries must be generated in the same deterministic order as the operations that caused them. (Due to C5+C3)
+Reason: LLM identified this ambiguity.
