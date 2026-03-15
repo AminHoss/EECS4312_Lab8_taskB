@@ -2,9 +2,7 @@
 ## Student ID: 
 
 Prompt #1: {}
-Response #1: {}
---------------------------------------------------
-Yes — there are several ambiguities and places that would benefit from clarification. Your specification is mostly good, but some rules conflict with each other or leave edge cases unclear. I’ll point out the main issues and suggest what might need clarification.
+Response #1: {Yes — there are several ambiguities and places that would benefit from clarification. Your specification is mostly good, but some rules conflict with each other or leave edge cases unclear. I’ll point out the main issues and suggest what might need clarification.
 
 1. Capacity Constraint Conflict
 
@@ -276,4 +274,479 @@ User ID uniqueness scope
 
 ✅ Overall: Your specification is solid for a class assignment, but tightening these points would make it much more precise and implementable.
 
-If you'd like, I can also show you the cleaned-up “perfect version” of this specification (the way professors usually expect it). It would take your answers and rewrite them into a fully consistent spec.
+If you'd like, I can also show you the cleaned-up “perfect version” of this specification (the way professors usually expect it). It would take your answers and rewrite them into a fully consistent spec.}
+--------------------------------------------------
+
+Prompt #2: {ChatGPT I am building a system which is to manage registration queues, maintaining the maximum number of people in the queues based on a FIFO basis, and handling user cancellation and promoting waitlisted users whenever possible in a FIFO basis. 
+
+I have the following two personas:
+PERSONA 1 - Jane Adams (Primary User) Context. Busy professional managing daily routines and commitments who relies on automation to reduce cognitive load. Jane uses digital tools for medication reminders and event registrations and expects them to work reliably without manual oversight.  Behaviors. • Acts quickly and rarely revisits system suggestions. • Trusts the system to resolve conflicts and enforce rules automatically. • Prefers concise outputs and minimal interaction when making decisions.  Needs. • Predictable and stable ordering of reminders or system decisions. • Automatic handling of conflicts (e.g., reminder collisions or waitlist promotion). • Limited notification or information overload.  Pain Points. • Receiving too many notifications or duplicate system messages. • Systems behave inconsistently in similar situations. • Having to manually resolve conflicts or check system correctness.   
+
+PERSONA 2 – Mo Rodriguez (Edge User) Context. User with accessibility needs & heightened sensitivity to uncertainty. Mo relies on explicit explanations and consistent behavior to build trust in automated systems.  Behaviors. • Carefully reviews outputs and seeks explanations for system decisions. • Performs frequent updates (e.g., snoozing reminders or cancelling registrations). • Experiences stress when outcomes appear arbitrary or unexplained.  Needs. • Deterministic system behavior under ties or conflicting conditions. • Clear explanations when reminders are moved, skipped, or when waitlist promotions occur. • Explicitly handle edge cases instead of silent failure.  Pain Points. •  Not understanding why the system changed or rejected an action. •  Silent failures or dropped reminders/requests. •  Inconsistent responses across repeated or boundary scenarios. 
+
+And the following constraints derived from them:
+C1
+Persona: Jane
+Persona attribute: User expects automatic handling of conflicts
+Attribute type: Need
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must automatically handle conflicts in waitlist promotion.
+Current support level: Not Supported
+
+C2
+Persona: Jane
+Persona attribute: User expects predictable/consistent decision-making
+Attribute type: Need/Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must make the same decisions every time given the same current state and user requests.
+Current support level: Not Supported
+
+C3
+Persona: Mo
+Persona attribute: User expects explainable system decisions
+Attribute type: Behaviour
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system when in accessibility mode must log state changes and give the logic behind the changes. 
+Current support level: Not Supported
+
+C4
+Persona: Mo
+Persona attribute: User expects the system to not silently fail
+Attribute type: Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system when in accessibility mode must not reject a request or fail without outputting a notification detailing the reasoning.
+Current support level: Not Supported
+
+C5
+Persona: Mo
+Persona attribute: User expects determinism under ties
+Attribute type: Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must make the same choice deterministically under ties for waitlist position or promotion.
+Current support level: Not Supported
+
+C6
+Persona: Mo
+Persona attribute: User updates frequently
+Attribute type: Behaviour
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must handle frequent user requests such as cancellations or new registerations.
+Current support level: Not Supported
+
+C7
+Persona: Jane
+
+Persona Attribute: User expects minimum system interaction
+Attribute type: Behaviour
+Operationalization: Constraint
+
+Derived Constraint (if converted): The system must not notify or ask the user to make a decision when it comes to waitlist promotions
+Current support level: Not Supported
+
+C8
+Persona: Jane
+
+Persona Attribute: User does not like duplicate system messages
+Attribute type: Pain Points
+Operationalization: Constraint
+
+Derived Constraint (if converted): The system must not notify a user of the same event twice.
+Current support level: Not Supported
+
+And the following acceptance criteria:
+C1
+Persona: Jane
+Persona attribute: User expects automatic handling of conflicts
+Attribute type: Need
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must automatically handle conflicts in waitlist promotion.
+Current support level: Not Supported
+
+C2
+Persona: Jane
+Persona attribute: User expects predictable/consistent decision-making
+Attribute type: Need/Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must make the same decisions every time given the same current state and user requests.
+Current support level: Not Supported
+
+C3
+Persona: Mo
+Persona attribute: User expects explainable system decisions
+Attribute type: Behaviour
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system when in accessibility mode must log state changes and give the logic behind the changes. 
+Current support level: Not Supported
+
+C4
+Persona: Mo
+Persona attribute: User expects the system to not silently fail
+Attribute type: Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system when in accessibility mode must not reject a request or fail without outputting a notification detailing the reasoning.
+Current support level: Not Supported
+
+C5
+Persona: Mo
+Persona attribute: User expects determinism under ties
+Attribute type: Pain Point
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must make the same choice deterministically under ties for waitlist position or promotion.
+Current support level: Not Supported
+
+C6
+Persona: Mo
+Persona attribute: User updates frequently
+Attribute type: Behaviour
+Operationalization: Converted into Constraint
+Derived Constraint (if converted): The system must handle frequent user requests such as cancellations or new registerations.
+Current support level: Not Supported
+
+C7
+Persona: Jane
+
+Persona Attribute: User expects minimum system interaction
+Attribute type: Behaviour
+Operationalization: Constraint
+
+Derived Constraint (if converted): The system must not notify or ask the user to make a decision when it comes to waitlist promotions
+Current support level: Not Supported
+
+C8
+Persona: Jane
+
+Persona Attribute: User does not like duplicate system messages
+Attribute type: Pain Points
+Operationalization: Constraint
+
+Derived Constraint (if converted): The system must not notify a user of the same event twice.
+Current support level: Not Supported
+
+And the functional requirements:
+1.The system shall accept a fixed integer capacity greater than zero for the Event.
+2. The system shall register Users into the Event in chronological order when there is no waitlist, as long as there is still capacity.
+3. The system shall waitlist Users if the Event's capacity is full.
+
+4. The system shall keep track of the User's position in the waitlist based on a FIFO basis.
+5. The system shall promote a User from the waitlist into being registered on a FIFO basis, if a registered User cancels.
+6. The system shall not keep track of position once a User has been promoted from the waitlist into being a registered User.
+7. The system shall display the User's status and if waitlisted -position - upon being prompted by the User.
+8. The system shall reject a User's new registration, if they are already registered or in waitlist.
+
+9. The system shall move down all higher positions by one, once a waitlisted User cancels.
+10. The system shall treat a User who had once been registered but cancelled in the same way as a newly-registered User.
+1. ADD, requirement 11, The system shall have an accessibility mode, where it shall notify the user of waitlist promotions , and log the changes in waitlist position and the registered User list, as well as the initial waitlist position, statuses, and user_id of the users whose status or position changed.
+
+2. MODIFY, requirement 4, The system shall keep track of the User's position in the waitlist based on a FIFO basis primarily and alphabetically ordered user_id secondarily.Please identify any missing constraints
+
+Identify any missing constraints or ambiguous requirements}
+
+Response #2: {Your requirements already capture many core behaviors, but several **constraints needed to satisfy the personas and ensure deterministic queue management are still missing or ambiguous**. Below I grouped them into two sections: **missing constraints** and **ambiguous requirements that should be clarified**.
+
+---
+
+# 1. Missing Constraints
+
+These are constraints implied by the personas and system goals but **not yet explicitly stated**.
+
+## C9 – FIFO Timestamp Definition
+
+**Derived From:** C2 (predictable decisions) + C5 (determinism under ties)
+
+**Constraint:**
+The system must assign a unique timestamp or sequence number to every registration request to preserve FIFO ordering.
+
+**Reason:**
+If two requests arrive simultaneously, FIFO becomes ambiguous. Without this, deterministic ordering cannot be guaranteed.
+
+---
+
+## C10 – Deterministic Tie-Breaking Rule
+
+**Derived From:** C5 (determinism under ties)
+
+**Constraint:**
+If two users have the same request timestamp, the system must break ties deterministically using the alphabetical order of `user_id`.
+
+**Reason:**
+Your modified Requirement 4 mentions alphabetical ordering but does not explicitly say **when it is used**.
+
+---
+
+## C11 – Atomic Waitlist Promotion
+
+**Derived From:** C1 (automatic conflict handling)
+
+**Constraint:**
+The system must perform waitlist promotion and cancellation updates atomically so that no intermediate inconsistent state is observable.
+
+**Reason:**
+Without atomic operations, concurrent cancellations or registrations could result in:
+
+* multiple users promoted
+* skipped promotions
+* inconsistent waitlist ordering
+
+---
+
+## C12 – Single Queue Per Event
+
+**Constraint:**
+Each event must maintain exactly one registered-user list and one waitlist queue.
+
+**Reason:**
+This prevents ambiguity in how multiple queues might interact.
+
+---
+
+## C13 – Unique User Identifier
+
+**Constraint:**
+Each user must be identified by a unique immutable `user_id`.
+
+**Reason:**
+Alphabetical ordering and duplicate checks depend on this.
+
+---
+
+## C14 – Queue Integrity Constraint
+
+**Constraint:**
+At any time:
+
+```
+registered_users ≤ capacity
+waitlist_users ≥ 0
+```
+
+**Reason:**
+Ensures the system never exceeds event capacity.
+
+---
+
+## C15 – Consistent Promotion Trigger
+
+**Constraint:**
+Waitlist promotion must occur **immediately after** a registered user cancellation if the waitlist is non-empty.
+
+**Reason:**
+Prevents states where capacity is available but users remain waitlisted.
+
+---
+
+## C16 – Accessibility Mode Scope
+
+**Derived From:** C3 + C4
+
+**Constraint:**
+Accessibility mode must apply to all system operations including:
+
+* registration
+* cancellation
+* promotion
+* rejection of requests
+
+**Reason:**
+Requirement 11 currently only logs promotions and waitlist changes.
+
+---
+
+## C17 – Log Determinism
+
+**Derived From:** Mo's need for explainability
+
+**Constraint:**
+Log entries must be generated in the same deterministic order as the operations that caused them.
+
+**Reason:**
+Otherwise Mo could see different explanations for identical scenarios.
+
+---
+
+## C18 – Notification Suppression Rule
+
+**Derived From:** C7 + C8
+
+**Constraint:**
+When accessibility mode is disabled, the system must suppress notifications for automatic waitlist promotions.
+
+**Reason:**
+Jane prefers minimal interaction.
+
+---
+
+## C19 – Duplicate Notification Guard
+
+**Derived From:** C8
+
+**Constraint:**
+The system must track notification events to ensure the same state change is not reported more than once to the same user.
+
+---
+
+## C20 – Request Processing Order
+
+**Derived From:** C2 + C6
+
+**Constraint:**
+User requests must be processed sequentially in the order received.
+
+**Reason:**
+Prevents nondeterministic behavior during high-frequency updates.
+
+---
+
+# 2. Ambiguous Requirements
+
+These requirements exist but **contain ambiguity that could produce inconsistent implementations**.
+
+---
+
+## Requirement 2 – Chronological Order
+
+> “register Users into the Event in chronological order”
+
+**Ambiguity**
+
+* Does chronological mean **request arrival time**?
+* How are simultaneous requests handled?
+
+**Suggested clarification**
+
+> Registration requests shall be ordered by request timestamp and processed FIFO.
+
+---
+
+## Requirement 3 – Waitlist Creation
+
+> “The system shall waitlist Users if capacity is full.”
+
+**Ambiguity**
+
+* Is the waitlist automatically created?
+* Is there a maximum waitlist size?
+
+---
+
+## Requirement 4 (Modified)
+
+> FIFO primarily and alphabetically ordered user_id secondarily.
+
+**Ambiguity**
+
+* Alphabetical ordering applies **only when timestamps match**, or **always**?
+
+Clarify:
+
+> FIFO by request timestamp; alphabetical `user_id` used only for timestamp ties.
+
+---
+
+## Requirement 5 – Promotion
+
+> “promote a User from the waitlist into being registered”
+
+**Ambiguity**
+
+* Is promotion **immediate** or **scheduled**?
+
+---
+
+## Requirement 7 – Display Status
+
+> “upon being prompted by the User”
+
+**Ambiguity**
+
+* Is this an API call?
+* Does it return both registered and waitlist information?
+
+---
+
+## Requirement 8 – Reject Duplicate Registrations
+
+**Ambiguity**
+
+* Does this include users currently being promoted?
+* What if a cancellation and registration happen simultaneously?
+
+---
+
+## Requirement 9 – Position Update
+
+> “move down all higher positions by one”
+
+**Ambiguity**
+
+* Does this happen before or after promotions?
+
+---
+
+## Requirement 10 – Re-registration
+
+> “treated as a newly registered User”
+
+**Ambiguity**
+
+* Does the user receive a **new timestamp**?
+
+---
+
+## Requirement 11 – Accessibility Mode
+
+**Ambiguity**
+
+* Is accessibility mode **user-specific** or **system-wide**?
+
+---
+
+# 3. Important Missing Edge Case Constraints
+
+These are subtle but important for deterministic queue systems.
+
+### Cancellation of Waitlisted User During Promotion
+
+Define which operation has priority.
+
+### Concurrent Registrations When One Slot Exists
+
+Only one user should be registered.
+
+### Event Capacity Change
+
+Not currently specified.
+
+### System Restart / Persistence
+
+Queue state persistence is not defined.
+
+---
+
+# 4. Summary of Additional Constraints
+
+Missing constraints suggested:
+
+| ID  | Constraint                                      |
+| --- | ----------------------------------------------- |
+| C9  | Unique timestamp for requests                   |
+| C10 | Deterministic tie-breaking rule                 |
+| C11 | Atomic promotion/cancellation operations        |
+| C12 | Single queue per event                          |
+| C13 | Unique immutable user_id                        |
+| C14 | Queue integrity (capacity constraint)           |
+| C15 | Immediate promotion after cancellation          |
+| C16 | Accessibility mode applies to all operations    |
+| C17 | Deterministic logging                           |
+| C18 | Notification suppression when accessibility off |
+| C19 | Duplicate notification guard                    |
+| C20 | Sequential request processing                   |
+
+---
+
+✅ **Key insight:**
+Most of the missing constraints are about **determinism, atomicity, and state consistency**, which are critical to satisfy **Mo's trust requirements** and **Jane's expectation of reliable automation**.
+
+---
+
+If you'd like, I can also show you **3–4 critical edge-case scenarios (race conditions) that your current requirements would fail**, which is often required in **software requirements engineering assignments**.
+}
